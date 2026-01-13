@@ -7,8 +7,9 @@ dosout = 'pdos.out'
 atomic_states = [['19Pb','20Pb','27Br','28Br','29Br','30Br','31Br','32Br'],
                  ['H','C','N'],['33Br','34Br']]  # List of atomic states to project onto
 atom_proj_file = 'atomic_proj.xml'
+SOC = True  # Whether spin-orbit coupling is considered
 
-def parse_dos_file(dosout, SOC=True):
+def parse_dos_file(dosout, SOC):
     """
     Parse a DOS file to extract state information.
 
@@ -99,8 +100,11 @@ def parse_atom_proj_file(atom_proj_file):
     return eigs, array_dos
 
 # Parse the DOS and atomic projection files
-natomwfc, nbnd, nkpt, list_states = parse_dos_file(dosout, SOC=True)
+natomwfc, nbnd, nkpt, list_states = parse_dos_file(dosout, SOC)
 eigs, array_dos = parse_atom_proj_file(atom_proj_file)
+
+print(f"Parsed DOS file: natomwfc={natomwfc}, nbnd={nbnd}, nkpt={nkpt}")
+#print(list_states)
 
 # Initialize overlaps array: shape (nkpt, nbnd, number of atomic states)
 overlaps = np.zeros((nkpt, nbnd, len(atomic_states)))
